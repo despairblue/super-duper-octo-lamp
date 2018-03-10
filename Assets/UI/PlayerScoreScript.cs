@@ -13,11 +13,11 @@ public class PlayerScoreScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        text.text = "Player Score: " + gameMaster.getScore();		
+        text.text = gameMaster.getScore().ToString();		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        text.text = "Player Score: " + gameMaster.getScore();
+        text.text = gameMaster.getScore().ToString();
     }
 }

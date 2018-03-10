@@ -14,12 +14,12 @@ public class TimeScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        text.text = "Time: " + gameMaster.getTime();
+        text.text = gameMaster.getTime().ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
-        text.text = "Time: " + gameMaster.getTime();
+        text.text = gameMaster.getTime().ToString();
     }
 }
