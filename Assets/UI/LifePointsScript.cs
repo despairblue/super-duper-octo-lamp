@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LivePointsScript : MonoBehaviour {
+public class LifePointsScript : MonoBehaviour {
 
     [SerializeField]
-    int LivePoints;
+    int LifePoints;
 
     [SerializeField]
     Slider slider;
@@ -17,13 +17,13 @@ public class LivePointsScript : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        slider.maxValue = LivePoints;
-        slider.value = gameMaster.getLivePoints();
+        slider.maxValue = LifePoints;
+        slider.value = gameMaster.getLifePoints();
     }
 
     // Update is called once per frame
     void Update()
     {
-        slider.value =  gameMaster.getLivePoints();
+        slider.value =  gameMaster.getLifePoints();
     }
 }
