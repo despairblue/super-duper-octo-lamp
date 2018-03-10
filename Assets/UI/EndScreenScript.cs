@@ -23,7 +23,7 @@ public class EndScreenScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (gameMaster.getTime() < 1) {
+        if (gameMaster.getLifePoints() < 1) {
             EndScreen.enabled = true;
 
             for (int i = 0; i < EndScreen.transform.childCount; i++)
