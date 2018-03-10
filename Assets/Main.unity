@@ -307,12 +307,12 @@ Prefab:
     - target: {fileID: 224719687879848250, guid: 62996b6f17c702c4e859a8870f010870,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224719687879848250, guid: 62996b6f17c702c4e859a8870f010870,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1835750293738466, guid: 62996b6f17c702c4e859a8870f010870, type: 2}
       propertyPath: m_IsActive
@@ -881,6 +881,18 @@ GameObject:
   m_PrefabParentObject: {fileID: 1835750293738466, guid: 62996b6f17c702c4e859a8870f010870,
     type: 2}
   m_PrefabInternal: {fileID: 132053989}
+--- !u!114 &802625419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 802625418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee5bc3ff89e5a6e4c8a6fa6567d18358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TitleScreen: {fileID: 802625418}
 --- !u!1 &882480176
 GameObject:
   m_ObjectHideFlags: 0

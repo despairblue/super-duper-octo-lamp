@@ -18,6 +18,6 @@ public class StartOnClick : MonoBehaviour {
     {
         //GameMaster.initNewGame();
         titleScreen.SetActive(false);
-
+        Time.timeScale = 1f;
     }
 }
