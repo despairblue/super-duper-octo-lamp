@@ -14,7 +14,6 @@ public class GameMaster : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		enemies = new ArrayList();
-
 	}
 	
 	// Update is called once per frame
@@ -62,5 +61,17 @@ public class GameMaster : MonoBehaviour {
 
 	private int getRandomLand() {
 		return Random.Range (0, 8);
+	}
+
+	public int getLifePoints() {
+		return 10;
+	}
+	
+	public int getTime() {
+		return 10;
+	}
+	
+	public int getScore() {
+		return 10;
 	}
 }
