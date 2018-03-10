@@ -8,55 +8,107 @@ public class GameMaster : MonoBehaviour {
 	public GameObject octupus;
 	public GameObject enemy;
 
+	public int maxEnergy = 9;
+	public float stuntime = 1;
+	public float spawnTimeChangeInterval = 20;
+
 	private ArrayList enemies;
-	public Transform[] spawns;
+	public Transform[] spawnLanes;
+	public GameObject[] octopusArms;
+
+	private int currentEnergy = 9;
+	private float lastSpawn = 0;
+	public float spawnFrequency = 2;
+	private float stunTimer = 0;
+	private float spawnTimeChangeTimer;
 
 	// Use this for initialization
 	void Start () {
 		enemies = new ArrayList();
+		spawnTimeChangeTimer = spawnTimeChangeInterval;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		foreach (GameObject enemy in enemies) {
-			enemy.transform.position += Vector3.up * 0.1f;
-		}
+	void FixedUpdate () {
+		spawnEnemy (Random.Range(0, 8));
+		stunTimer -= Time.deltaTime;
+		checkSpawnTimer ();
 
 		if (Input.GetKeyDown("a")) {
-			spawnEnemy(0);
+			checkHit (0);
 		}
 
 		if (Input.GetKeyDown("s")) {
-			spawnEnemy(1);
+			checkHit(1);
 		}
 
 		if (Input.GetKeyDown("d")) {
-			spawnEnemy(2);
+			checkHit(2);
 		}
 
 		if (Input.GetKeyDown("f")) {
-			spawnEnemy(3);
+			checkHit(3);
 		}
 
 		if (Input.GetKeyDown("g")) {
-			spawnEnemy(4);
+			checkHit(4);
 		}
 
 		if (Input.GetKeyDown("h")) {
-			spawnEnemy(5);
+			checkHit(5);
 		}
 
 		if (Input.GetKeyDown("j")) {
-			spawnEnemy(6);
+			checkHit(6);
 		}
 
 		if (Input.GetKeyDown("k")) {
-			spawnEnemy(7);
+			checkHit(7);
+		}
+	}
+
+	private void checkHit (int lane) {
+		if (stunTimer <= 0) {
+			octopusArms [lane].GetComponent<octopusarm> ().hit ();
+			Debug.Log ("hit");
+			var enemiesInHitBox = octopusArms[lane].GetComponent<octopusarm> ().enemiesInHitBox.ToArray ();
+
+			if (enemiesInHitBox.Length > 0) {
+				currentEnergy = Mathf.Min (currentEnergy + 1, maxEnergy);
+
+				for (int i = 0; i < enemiesInHitBox.Length; i++) {
+					Destroy ((GameObject)enemiesInHitBox [i]);
+				}
+			} else {
+				currentEnergy = Mathf.Max (currentEnergy - 3, 0);
+
+				if (currentEnergy <= 0) {
+					stunTimer = stuntime;
+					currentEnergy = maxEnergy;
+				}
+			}
+
+			Debug.Log ("Energy: " + currentEnergy);
+		} else {
+			Debug.Log ("Nope");
+		}
+	}
+
+	private void checkSpawnTimer() {
+		spawnTimeChangeTimer -= Time.deltaTime;
+
+		if (spawnTimeChangeTimer <= 0) {
+			spawnTimeChangeTimer = spawnTimeChangeInterval;
+			spawnFrequency = spawnFrequency * 0.8f;
 		}
 	}
 
 	private void spawnEnemy(int lane) {
-		enemies.Add(Instantiate (enemy, spawns[lane].transform.position, Quaternion.identity));
+		if (Time.fixedTime - lastSpawn > spawnFrequency) {
+			lastSpawn = Time.fixedTime;
+			var enemyInstance = Instantiate (enemy, spawnLanes [lane].transform.position, Quaternion.identity);
+			enemies.Add (enemyInstance);
+		}
 	}
 
 	private int getRandomLand() {
@@ -73,5 +125,9 @@ public class GameMaster : MonoBehaviour {
 	
 	public int getScore() {
 		return 10;
+	}
+
+	public int getEnergy() {
+		return currentEnergy;
 	}
 }
