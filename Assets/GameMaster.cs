@@ -2,10 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class main : MonoBehaviour {
+
+public class GameMaster : MonoBehaviour {
+
+	public GameObject octupus;
+	public GameObject spawnPoints;
+
+	public GameObject[] enemies;
+
+	GameObject[] spawns;
 
 	// Use this for initialization
 	void Start () {
+
+
 		
 	}
 	
@@ -13,4 +23,5 @@ public class main : MonoBehaviour {
 	void Update () {
 		
 	}
+
 }
