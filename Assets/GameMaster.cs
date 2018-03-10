@@ -5,16 +5,21 @@ using UnityEngine;
 
 public class GameMaster : MonoBehaviour {
 
-	public GameObject octupus;
+	public GameObject octupusInstance;
 	public GameObject enemy;
 
 	public int maxEnergy = 9;
 	public float stuntime = 1;
 	public float spawnTimeChangeInterval = 20;
 
+	public int score = 0;
+	public int comboCount = 0;
+	public int comboMultiplier = 1;
+
 	private ArrayList enemies;
 	public Transform[] spawnLanes;
 	public GameObject[] octopusArms;
+	public GameObject hiteffect;
 
 	private int currentEnergy = 9;
 	private float lastSpawn = 0;
@@ -33,6 +38,7 @@ public class GameMaster : MonoBehaviour {
 		spawnEnemy (Random.Range(0, 8));
 		stunTimer -= Time.deltaTime;
 		checkSpawnTimer ();
+		checkStunned();
 
 		if (Input.GetKeyDown("a")) {
 			checkHit (0);
@@ -67,20 +73,46 @@ public class GameMaster : MonoBehaviour {
 		}
 	}
 
+	private void scoring() {
+		comboCount++;
+
+		if (comboCount < 4) {
+			comboMultiplier = 1;
+		} else if (comboCount >= 4 && comboCount < 8) {
+			comboMultiplier = 2;
+		} else {
+			comboMultiplier = 3;
+		}
+
+		score += 100 * comboMultiplier;
+	}
+
+	private void checkStunned () {
+		if (stunTimer <= 0) {
+			octupusInstance.GetComponent<Animator> ().SetBool("stunned", false);
+		} else {
+			octupusInstance.GetComponent<Animator> ().SetBool ("stunned", true);
+		}
+	}
+
 	private void checkHit (int lane) {
 		if (stunTimer <= 0) {
 			octopusArms [lane].GetComponent<octopusarm> ().hit ();
-			Debug.Log ("hit");
+
 			var enemiesInHitBox = octopusArms[lane].GetComponent<octopusarm> ().enemiesInHitBox.ToArray ();
 
 			if (enemiesInHitBox.Length > 0) {
+				scoring ();
 				currentEnergy = Mathf.Min (currentEnergy + 1, maxEnergy);
 
 				for (int i = 0; i < enemiesInHitBox.Length; i++) {
+					Instantiate (hiteffect, ((GameObject)enemiesInHitBox [i]).transform.position, Quaternion.identity);
+					
 					Destroy ((GameObject)enemiesInHitBox [i]);
 				}
 			} else {
 				currentEnergy = Mathf.Max (currentEnergy - 3, 0);
+				comboCount = 0;
 
 				if (currentEnergy <= 0) {
 					stunTimer = stuntime;
@@ -89,9 +121,7 @@ public class GameMaster : MonoBehaviour {
 			}
 
 			Debug.Log ("Energy: " + currentEnergy);
-		} else {
-			Debug.Log ("Nope");
-		}
+		}	
 	}
 
 	private void checkSpawnTimer() {
@@ -116,15 +146,15 @@ public class GameMaster : MonoBehaviour {
 	}
 
 	public int getLifePoints() {
-		return 10;
+		return octupusInstance.GetComponent<octopus>().health;
 	}
 	
 	public int getTime() {
-		return 10;
+		return Mathf.RoundToInt(Time.fixedTime);
 	}
 	
 	public int getScore() {
-		return 10;
+		return score;
 	}
 
 	public int getEnergy() {

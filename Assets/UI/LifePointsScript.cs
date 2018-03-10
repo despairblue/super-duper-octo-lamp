@@ -41,23 +41,23 @@ public class LifePointsScript : MonoBehaviour {
     {
         slider.value = gameMaster.getLifePoints();
         float criteria = slider.value / slider.maxValue;
-        print(criteria);
+
         if (criteria < 0)
         {
             LifeAsAImage.sprite = zerolife;
         }
-        if (criteria > 0 && criteria < 0.20f) {
+        if (criteria > 0 && criteria <= 0.20f) {
             LifeAsAImage.sprite = onelife;
         }
-        if (criteria > 0.20f && criteria < 0.40f)
+        if (criteria > 0.20f && criteria <= 0.40f)
         {
             LifeAsAImage.sprite = twolife;
         }
-        if (criteria > 0.40f && criteria < 0.60f)
+        if (criteria > 0.40f && criteria <= 0.60f)
         {
             LifeAsAImage.sprite = threelife;
         }
-        if (criteria > 0.60f && criteria < 0.80f)
+        if (criteria > 0.60f && criteria <= 0.80f)
         {
             LifeAsAImage.sprite = fourlife;
         }

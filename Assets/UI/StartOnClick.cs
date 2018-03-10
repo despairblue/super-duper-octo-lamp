@@ -18,5 +18,6 @@ public class StartOnClick : MonoBehaviour {
     {
         //GameMaster.initNewGame();
         titleScreen.SetActive(false);
+
     }
 }

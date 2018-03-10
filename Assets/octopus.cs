@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class octopus : MonoBehaviour {
-
+	[SerializeField]
+	public GameMaster gameMaster;
 	public int health = 10;
+	public GameObject hiteffect;
+
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +23,7 @@ public class octopus : MonoBehaviour {
 	{
 		if (collider.CompareTag("Fish"))
 		{
+			Instantiate (hiteffect, collider.transform.position, Quaternion.identity);
 			Destroy(collider.gameObject);
 
 			ApplyDamage();
@@ -35,5 +39,7 @@ public class octopus : MonoBehaviour {
 		if (health <= 0){
 			Debug.Log("GameOver");
 		}
+
+		gameMaster.comboCount = 0;
 	}
 }

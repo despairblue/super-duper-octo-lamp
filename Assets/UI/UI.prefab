@@ -643,7 +643,7 @@ MonoBehaviour:
   threelife: {fileID: 21300000, guid: 3e089ab2ed8117d41936def8cc7fc4d1, type: 3}
   fourlife: {fileID: 21300000, guid: d192b469bf164ca41be276ebc0f86804, type: 3}
   fivelife: {fileID: 21300000, guid: 78ccd7ba3c1460243ae1abd7139a31b9, type: 3}
-  LifePoints: 20
+  LifePoints: 5
   slider: {fileID: 114592246629313314}
   LifeAsAImage: {fileID: 114512613529963632}
   gameMaster: {fileID: 0}
@@ -793,7 +793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aad0cb946b0511e41922be25269f58cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Energy: 20
+  Energy: 9
   slider: {fileID: 114419230804819250}
   gameMaster: {fileID: 0}
 --- !u!114 &114358531012722154
