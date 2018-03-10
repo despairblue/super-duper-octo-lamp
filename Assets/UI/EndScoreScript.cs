@@ -14,12 +14,12 @@ public class EndScoreScript : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        text.text = "Final Score: " + gameMaster.getScore();
+        text.text = gameMaster.getScore().ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
-        text.text = "Final Score: " + gameMaster.getScore();
+        text.text = gameMaster.getScore().ToString();
     }
 }
