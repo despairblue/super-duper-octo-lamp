@@ -34,12 +34,7 @@ public class GameMaster : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-		spawnEnemy (Random.Range(0, 8));
-		stunTimer -= Time.deltaTime;
-		checkSpawnTimer ();
-		checkStunned();
-
+	void Update () {
 		if (Input.GetKeyDown("a")) {
 			checkHit (0);
 		}
@@ -71,6 +66,14 @@ public class GameMaster : MonoBehaviour {
 		if (Input.GetKeyDown("k")) {
 			checkHit(7);
 		}
+	}
+	
+	void FixedUpdate () {
+		spawnEnemy (Random.Range(0, 8));
+		stunTimer -= Time.fixedDeltaTime;
+		checkSpawnTimer ();
+		checkStunned();
+
 	}
 
 	private void scoring() {
