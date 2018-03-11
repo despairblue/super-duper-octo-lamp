@@ -16,7 +16,6 @@ public class StartOnClick : MonoBehaviour {
 
     public void load()
     {
-        //GameMaster.initNewGame();
         titleScreen.SetActive(false);
         Time.timeScale = 1f;
     }

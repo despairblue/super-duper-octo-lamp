@@ -159,7 +159,7 @@ public class GameMaster : MonoBehaviour {
 	}
 	
 	public int getTime() {
-		return Mathf.RoundToInt(Time.fixedTime);
+		return Mathf.RoundToInt(Time.timeSinceLevelLoad);
 	}
 	
 	public int getScore() {
