@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PauseMenuScript : MonoBehaviour {
     public static bool GameIsPaused = false;
@@ -37,10 +38,8 @@ public class PauseMenuScript : MonoBehaviour {
     }
 
     public void loadMenu() {
-        PauseMenuUI.SetActive(false);
-        Time.timeScale = 0f;
-        TitleScreen.SetActive(true);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-  
+
 }
