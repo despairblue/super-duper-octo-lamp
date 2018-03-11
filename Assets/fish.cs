@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class fish : MonoBehaviour {
 
-	public Vector2 speed = new Vector2(0, 10);
+	public float speed = 7;
+	public float randomOffset = 6;
 
 	// Use this for initialization
 	void Start () {
-		GetComponent<Rigidbody2D> ().AddForce (speed, ForceMode2D.Impulse);
+		var finalSpeed = new Vector2(0, speed + Random.Range(0, randomOffset + 1));
+		
+		GetComponent<Rigidbody2D> ().AddForce (finalSpeed, ForceMode2D.Impulse);
 	}
 	
 	// Update is called once per frame
