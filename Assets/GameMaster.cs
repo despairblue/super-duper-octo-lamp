@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class GameMaster : MonoBehaviour {
@@ -65,6 +66,11 @@ public class GameMaster : MonoBehaviour {
 
 		if (Input.GetKeyDown("k")) {
 			checkHit(7);
+		}
+
+		if (Input.GetKeyDown ("r")) {
+			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
+
 		}
 	}
 	
