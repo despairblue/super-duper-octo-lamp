@@ -5,27 +5,20 @@ using UnityEngine.UI;
 
 public class EndScoreScript : MonoBehaviour {
 
-
-
     [SerializeField]
     Text text;
-
-    [SerializeField]
-    GameMaster gameMaster;
 
     // Use this for initialization
     void Start()
     {
 
-        text.text = gameMaster.getScore().ToString();
+        text.text = PlayerPrefs.GetInt("score").ToString();
 
     }
 
     // Update is called once per frame
     void Update()
-    {
-
-        text.text = gameMaster.getScore().ToString();
+    { 
 
     }
 }

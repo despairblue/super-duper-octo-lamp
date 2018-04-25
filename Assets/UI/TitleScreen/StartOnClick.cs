@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class StartOnClick : MonoBehaviour {
 
     public Button yourButton;
-    public GameObject titleScreen;
 
     void Start()
     {
@@ -16,7 +16,6 @@ public class StartOnClick : MonoBehaviour {
 
     public void load()
     {
-        titleScreen.SetActive(false);
-        Time.timeScale = 1f;
+        SceneManager.LoadScene("level1");
     }
 }

@@ -42,4 +42,8 @@ public class octopus : MonoBehaviour {
 
 		gameMaster.comboCount = 0;
 	}
+
+    public bool isDead() {
+        return this.health < 1;
+    }
 }

@@ -69,10 +69,23 @@ public class GameMaster : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown ("r")) {
-			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
+			SceneManager.LoadScene ("level1");
 
 		}
+
+        if (octupusInstance.GetComponent<octopus>().isDead()) {
+            setHighscore();
+            PlayerPrefs.SetInt("score", getScore());
+            SceneManager.LoadScene("EndScreen");
+        }
 	}
+
+    void setHighscore() {
+        if (getScore() > PlayerPrefs.GetInt("highscore"))
+        {
+            PlayerPrefs.SetInt("highscore", getScore());
+        }
+    }
 	
 	void FixedUpdate () {
 		spawnEnemy (Random.Range(0, 8));
@@ -169,4 +182,8 @@ public class GameMaster : MonoBehaviour {
 	public int getEnergy() {
 		return currentEnergy;
 	}
+
+    public int getMultiplier() {
+        return comboMultiplier;
+    }
 }
