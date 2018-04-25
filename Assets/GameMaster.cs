@@ -68,11 +68,6 @@ public class GameMaster : MonoBehaviour {
 			checkHit(7);
 		}
 
-		if (Input.GetKeyDown ("r")) {
-			SceneManager.LoadScene ("level1");
-
-		}
-
         if (octupusInstance.GetComponent<octopus>().isDead()) {
             setHighscore();
             PlayerPrefs.SetInt("score", getScore());
@@ -80,22 +75,45 @@ public class GameMaster : MonoBehaviour {
         }
 	}
 
-    void setHighscore() {
-        if (getScore() > PlayerPrefs.GetInt("highscore"))
+    void FixedUpdate()
+    {
+        spawnEnemy(Random.Range(0, 8));
+        stunTimer -= Time.fixedDeltaTime;
+        checkSpawnTimer();
+        manageStunnedAnimation();
+    }
+
+    private void checkHit(int lane)
+    {
+        if (stunTimer <= 0)
         {
-            PlayerPrefs.SetInt("highscore", getScore());
+            manageHitAnimation(lane);
+
+            object[] enemiesInHitBox = octopusArms[lane].GetComponent<octopusarm>().enemiesInHitBox.ToArray();
+
+            if (enemiesInHitBox.Length > 0)
+            {
+                destroyEnemies(enemiesInHitBox);
+                scoring(enemiesInHitBox.Length);
+                currentEnergy = Mathf.Min(currentEnergy + 1, maxEnergy);              
+            }
+            else
+            {
+                currentEnergy = Mathf.Max(currentEnergy - 3, 0);
+                comboCount = 0;
+
+                if (currentEnergy <= 0)
+                {
+                    stunTimer = stuntime;
+                    currentEnergy = maxEnergy;
+                }
+            }
+
+            Debug.Log("Energy: " + currentEnergy);
         }
     }
-	
-	void FixedUpdate () {
-		spawnEnemy (Random.Range(0, 8));
-		stunTimer -= Time.fixedDeltaTime;
-		checkSpawnTimer ();
-		checkStunned();
 
-	}
-
-	private void scoring() {
+	private void scoring(int enemyCount) {
 		comboCount++;
 
 		if (comboCount < 4) {
@@ -106,44 +124,30 @@ public class GameMaster : MonoBehaviour {
 			comboMultiplier = 3;
 		}
 
-		score += 100 * comboMultiplier;
+		score += 100 * comboMultiplier * enemyCount;
 	}
 
-	private void checkStunned () {
+    private void destroyEnemies(object[] enemiesInHitBox) {
+
+        foreach (GameObject enemy in enemiesInHitBox)
+        {
+            Instantiate(hiteffect, ((GameObject)enemy).transform.position, Quaternion.identity);
+            Destroy((GameObject)enemy);
+        }
+    }
+
+        
+
+private void manageHitAnimation(int lane) {
+        octopusArms[lane].GetComponent<octopusarm>().hit();
+    }
+
+	private void manageStunnedAnimation () {
 		if (stunTimer <= 0) {
 			octupusInstance.GetComponent<Animator> ().SetBool("stunned", false);
 		} else {
 			octupusInstance.GetComponent<Animator> ().SetBool ("stunned", true);
 		}
-	}
-
-	private void checkHit (int lane) {
-		if (stunTimer <= 0) {
-			octopusArms [lane].GetComponent<octopusarm> ().hit ();
-
-			var enemiesInHitBox = octopusArms[lane].GetComponent<octopusarm> ().enemiesInHitBox.ToArray ();
-
-			if (enemiesInHitBox.Length > 0) {
-				scoring ();
-				currentEnergy = Mathf.Min (currentEnergy + 1, maxEnergy);
-
-				for (int i = 0; i < enemiesInHitBox.Length; i++) {
-					Instantiate (hiteffect, ((GameObject)enemiesInHitBox [i]).transform.position, Quaternion.identity);
-					
-					Destroy ((GameObject)enemiesInHitBox [i]);
-				}
-			} else {
-				currentEnergy = Mathf.Max (currentEnergy - 3, 0);
-				comboCount = 0;
-
-				if (currentEnergy <= 0) {
-					stunTimer = stuntime;
-					currentEnergy = maxEnergy;
-				}
-			}
-
-			Debug.Log ("Energy: " + currentEnergy);
-		}	
 	}
 
 	private void checkSpawnTimer() {
@@ -163,11 +167,15 @@ public class GameMaster : MonoBehaviour {
 		}
 	}
 
-	private int getRandomLand() {
-		return Random.Range (0, 8);
-	}
+    void setHighscore()
+    {
+        if (getScore() > PlayerPrefs.GetInt("highscore"))
+        {
+            PlayerPrefs.SetInt("highscore", getScore());
+        }
+    }
 
-	public int getLifePoints() {
+    public int getLifePoints() {
 		return octupusInstance.GetComponent<octopus>().health;
 	}
 	
@@ -186,4 +194,5 @@ public class GameMaster : MonoBehaviour {
     public int getMultiplier() {
         return comboMultiplier;
     }
+
 }
