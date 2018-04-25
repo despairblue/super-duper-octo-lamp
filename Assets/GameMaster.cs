@@ -81,51 +81,32 @@ public class GameMaster : MonoBehaviour {
         stunTimer -= Time.fixedDeltaTime;
         checkSpawnTimer();
         manageStunnedAnimation();
+        changeComboMulitplier();
     }
 
     private void checkHit(int lane)
     {
-        if (stunTimer <= 0)
+        if (notStunned())
         {
             manageHitAnimation(lane);
-
             object[] enemiesInHitBox = octopusArms[lane].GetComponent<octopusarm>().enemiesInHitBox.ToArray();
 
             if (enemiesInHitBox.Length > 0)
             {
                 destroyEnemies(enemiesInHitBox);
-                scoring(enemiesInHitBox.Length);
-                currentEnergy = Mathf.Min(currentEnergy + 1, maxEnergy);              
+                gainEnergy();
             }
             else
             {
-                currentEnergy = Mathf.Max(currentEnergy - 3, 0);
+                looseEnergy();
                 comboCount = 0;
-
-                if (currentEnergy <= 0)
+                if (isEnergyDepleted())
                 {
-                    stunTimer = stuntime;
-                    currentEnergy = maxEnergy;
+                    beStunned();
                 }
             }
-
-            Debug.Log("Energy: " + currentEnergy);
         }
     }
-
-	private void scoring(int enemyCount) {
-		comboCount++;
-
-		if (comboCount < 4) {
-			comboMultiplier = 1;
-		} else if (comboCount >= 4 && comboCount < 8) {
-			comboMultiplier = 2;
-		} else {
-			comboMultiplier = 3;
-		}
-
-		score += 100 * comboMultiplier * enemyCount;
-	}
 
     private void destroyEnemies(object[] enemiesInHitBox) {
 
@@ -133,12 +114,27 @@ public class GameMaster : MonoBehaviour {
         {
             Instantiate(hiteffect, ((GameObject)enemy).transform.position, Quaternion.identity);
             Destroy((GameObject)enemy);
+            comboCount++;
+            scoring();  
         }
     }
 
-        
+    private void changeComboMulitplier() {
+        if (comboCount < 4)
+        {
+            comboMultiplier = 1;
+        }
+        else if (comboCount >= 4 && comboCount < 8)
+        {
+            comboMultiplier = 2;
+        }
+        else
+        {
+            comboMultiplier = 3;
+        }
+    }
 
-private void manageHitAnimation(int lane) {
+    private void manageHitAnimation(int lane) {
         octopusArms[lane].GetComponent<octopusarm>().hit();
     }
 
@@ -167,12 +163,29 @@ private void manageHitAnimation(int lane) {
 		}
 	}
 
-    void setHighscore()
+
+   private void setHighscore()
     {
         if (getScore() > PlayerPrefs.GetInt("highscore"))
         {
             PlayerPrefs.SetInt("highscore", getScore());
         }
+    }
+
+    private void beStunned()
+    {
+        stunTimer = stuntime;
+        currentEnergy = maxEnergy;
+    }
+
+    private void scoring()
+    {
+        score += 100 * comboMultiplier;
+    }
+
+    private bool isEnergyDepleted()
+    {
+        return currentEnergy <= 0;
     }
 
     public int getLifePoints() {
@@ -194,5 +207,19 @@ private void manageHitAnimation(int lane) {
     public int getMultiplier() {
         return comboMultiplier;
     }
+    private bool notStunned() {
+        return stunTimer <= 0;
+    }
+
+    private void gainEnergy() {
+        currentEnergy = Mathf.Min(currentEnergy + 1, maxEnergy);
+    }
+
+    private void looseEnergy()
+    {
+        currentEnergy = Mathf.Max(currentEnergy - 3, 0);
+    }
+
+
 
 }
